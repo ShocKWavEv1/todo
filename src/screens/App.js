@@ -29,6 +29,7 @@ export default class App extends Component<{}> {
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
     if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
       if (event.id == 'add') { // this is the same id field from the static navigatorButtons definition
+        alert(this.state.data);
         this.showLightBox();
       }
     }
@@ -37,7 +38,7 @@ export default class App extends Component<{}> {
   showLightBox(){
     this.props.navigator.showLightBox({
     screen: "Lightbox", // unique ID registered with Navigation.registerScreen
-    passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
+    passProps: { onUnmount: (data) => this.handleCreate(data) }, // simple serializable object that will pass as props to the lightbox (optional)
     style: {
     backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
     backgroundColor: "rgba(0,0,0,.7)", // tint color for the background, you can specify alpha here (optional)
@@ -45,6 +46,11 @@ export default class App extends Component<{}> {
     },
     adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
     });
+  }
+
+  handleCreate(res){
+      alert(JSON.stringify(res))
+      this.setState({data: [...this.state.data, ...res]});
   }
 
   renderNoData(){
